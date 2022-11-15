@@ -1,0 +1,46 @@
+<!<!DOCTYPE HTML>
+<html>
+<head>
+  <title>混合颜色试验</title>
+</head>
+<body>
+# 混合颜色试验
+
+## 不同色块按不同比例混合，可得到不同颜色
+
+### let's have a try!
+<div id='show'>n</div>
+<input type='color' id='color1' >颜色1</input>
+<input type='color' id='color2'>颜色2</input>
+<button>reset</button>
+<canvas id='try' width=360px height=400px style='border:1px solid gold'></canvas>
+
+<script>
+const show=document.getElementById('show');
+const color1=document.getElementById('color1');
+const color2=document.getElementById('color2');
+const cv=document.getElementById('try');
+ctx=cv.getContext('2d');
+ctx.fillRect(0,0,400,40);
+let n=2;
+
+function trans(n=25){
+  for(let x=0;x<n;x+=1){
+     for(let y=0;y<n;y+=1){
+        ctx.fillStyle=`${(x+y)%2?color1.value:color2.value}`;
+        ctx.fillRect(360/n*x,400/n*y,360/n,400/n);
+     }
+  }
+}
+
+cv.onclick=function(){
+show.innerHTML='分成'+n+'份';
+trans(n);
+n+=10;
+};
+document.querySelector('button').onclick=function(){n=4;};
+
+</script>
+
+</body>
+</html>

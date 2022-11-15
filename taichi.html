@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+  <head>
+    <title>太极双鱼图</title>
+    <style>
+      body{
+        background-color:steelblue;
+      }
+      .taichi{
+        fill:black;
+        stroke:black;
+        stroke-width: 2px;
+      }
+      .path{
+        stroke-width: 2px;
+        stroke:pink;
+        fill:gold;
+      }
+       .path2{
+        stroke-width: 2px;
+        stroke:pink;
+        fill:white;
+      }
+      
+      div{
+        display: block;
+        height: 50px;
+        width: 250px;
+        background-color: black;
+        text-align: justify;
+      }
+      span{
+        display: inline-block;
+        height: 40px;
+        width: 80px;
+        text-align: center;
+      }
+      text{
+        stroke: red;
+      }
+    </style>
+  </head>
+  <body>
+    <svg height=300 width=300 viewbox="-150 -150 300 300" style="border: 1px solid steelblue">
+      <circle cx=0 cy=0 r=150 class=taichi></circle>
+      <g id=eye>
+        <path class='path2' d='M 0 0 Q 0 -100 40 -40 z'></path>
+        <circle cy=-75 cx=0 r=15 fill=black></circle>
+        <circle cy=75 cx=0 r=15 fill=white></circle>
+        <text x=-20px y=0 rotate=-35deg>双鱼图</text>
+      </g>
+    </svg>
+    <p>太极双鱼图</p>
+    <p>请输入数字，比如23</p>
+    <input type=range max=100 min=-100></input>
+    <script>
+    let rand=-23;
+    document.write(rand)
+    let r=document.querySelector('circle').r.baseVal.value;
+    const pi=Math.pi;
+    let l=r/4;
+    /*
+    戴九履一
+    左三右七
+    二四为肩
+    六八为足
+    五居中间
+    */
+    const luoshu=[[6,7,2],
+                  [1,5,9],
+                  [8,3,4]];
+    let color=function(y){
+      return `hsl(${360/9*y},50%,50%)`;
+      
+    };
+    luoshu.forEach((x,i)=>{
+      document.write('<div>')
+      x.forEach((y,j)=>{
+        document.write(`<span style='background-color:${color(y)}'>${y}</span>`)
+      })
+      document.write('</div>')
+    })
+    const hetu=[
+                [1,6],
+                [2,7],
+                [3,8],
+                [4,9],
+                [5,10]];
+    let shuangyu=[
+      [1,1],
+      [0,0],
+      [0,1],
+      [0,2],
+      [1,2],
+      [1,0],
+      [2,0],
+      [2,1],
+      [2,2]];
+    let yutu=[];
+    shuangyu.forEach((x,i)=>{
+          let c=l*Math.abs(luoshu[x[0]][x[1]]-5);
+          let t=Math.atan2(x[1]-1,x[0]-1);
+          let dot=[Math.cos(t)*c,Math.sin(t)*c]
+          yutu.push(dot);
+         console.log(c,t/pi*180)
+        });
+    console.log(yutu)
+    function yu(i){
+      return yutu[i].toString();
+    }
+    let dd=`M ${yu(0)} Q 0 ${rand} ${yu(1)}
+      T ${yu(2)}
+      T ${yu(3)}
+      T ${yu(4)}
+      A ${r} ${r} 0 1 1 ${yu(5)}
+      M ${yu(0)} Q 0 ${-rand} ${yu(8)}
+      T ${yu(7)}
+      T ${yu(6)}
+      T ${yu(5)}
+    `;
+    let path2=document.querySelector('.path2');
+    path2.setAttribute('d',dd)
+    console.log(dd)
+    let eye=document.querySelector('#eye');
+  const input=document.querySelector('input');
+  input.onchange=function(){
+      rand=input.value;
+      dd=`M ${yu(0)} Q 0 ${-rand} ${yu(1)}
+      T ${yu(2)}
+      T ${yu(3)}
+      T ${yu(4)}
+      A ${r} ${r} 0 1 1 ${yu(5)}
+      M ${yu(0)} Q 0 ${rand} ${yu(8)}
+      T ${yu(7)}
+      T ${yu(6)}
+      T ${yu(5)}
+    `;
+     path2.setAttribute('d',dd)
+    eye.animate([
+  { transform: 'rotate(0)' },
+  { transform: 'rotate(360deg)' }
+],{duration: 2000,
+  iterations: 1,});
+  };
+    </script>
+
+  </body>
+</html>
